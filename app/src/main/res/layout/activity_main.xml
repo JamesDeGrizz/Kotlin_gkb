@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,29 +8,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="GeekBrains Notes"
             app:layout_scrollFlags="scroll|enterAlways" />
 
-    </AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_note"
-        />
-    <!--app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
 
-</CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

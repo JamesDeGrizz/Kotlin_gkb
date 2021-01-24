@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Kotlin_gkb</string>
+    <string name="noteTitle">Моя первая заметка</string>
+    <string name="noteContent">"Kotlin очень краткий, но при этом выразительный язык"</string>
 </resources>
