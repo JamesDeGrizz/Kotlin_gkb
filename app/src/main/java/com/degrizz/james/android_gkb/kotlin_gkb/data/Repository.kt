@@ -3,7 +3,7 @@ package com.degrizz.james.android_gkb.kotlin_gkb.data
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
 
 object Repository {
-    private val notes: List<Note> = listOf(
+    val notes: List<Note> = listOf(
         /*
         * Note(Resources.getSystem().getString(R.string.noteTitle),
             Resources.getSystem().getString(R.string.noteContent),
