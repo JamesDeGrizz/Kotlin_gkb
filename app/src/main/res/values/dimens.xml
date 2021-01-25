@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textViewMarginEnd">8dp</dimen>
+    <dimen name="textViewMarginStart">8dp</dimen>
+    <dimen name="textViewMarginTop">8dp</dimen>
+    <dimen name="textViewMargin">8dp</dimen>
+
+    <dimen name="cardViewMarginStart">4dp</dimen>
+    <dimen name="cardViewMarginEnd">4dp</dimen>
+    <dimen name="cardViewMarginTop">4dp</dimen>
+    <dimen name="cardViewMarginBottom">4dp</dimen>
+</resources>
