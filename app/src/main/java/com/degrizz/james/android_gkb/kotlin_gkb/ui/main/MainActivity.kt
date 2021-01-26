@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
 import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,11 +19,19 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(ui.toolbar)
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        adapter = MainAdapter()
+        adapter = MainAdapter(object: OnItemClickListener {
+            override fun onItemClick(note: Note) {
+                openNoteScreen(note)
+            }
+        })
         ui.mainRecycler.adapter = adapter
 
-        viewModel.viewState().observe(this, Observer<MainViewState> { state ->
+        viewModel.viewState().observe(this, { state ->
             state?.let { adapter.notes = state.notes }
         })
+    }
+
+    private fun openNoteScreen(note: Note) {
+        startActivity(NoteActivity.getStartIntent(this, note))
     }
 }
