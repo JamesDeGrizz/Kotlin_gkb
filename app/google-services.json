@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "837910688046",
+    "project_id": "kotlin-gkb",
+    "storage_bucket": "kotlin-gkb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837910688046:android:366aaceb6097c219f64abf",
+        "android_client_info": {
+          "package_name": "com.degrizz.james.android_gkb.kotlin_gkb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837910688046-mm0o47qhcfu85eo4911vpbgcisonni29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgrGAxU50LZPQK5JQxKERHEd4Ay8a-04Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837910688046-mm0o47qhcfu85eo4911vpbgcisonni29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

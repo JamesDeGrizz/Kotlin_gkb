@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Color
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
@@ -19,22 +20,23 @@ import java.util.*
 
 private const val SAVE_DELAY = 2000L
 
-class NoteActivity : AppCompatActivity() {
+class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     companion object {
         const val EXTRA_NOTE = "extra.note"
 
-        fun getStartIntent(context: Context, note: Note?): Intent {
+        fun getStartIntent(context: Context, noteId: String?): Intent {
             val intent = Intent(context, NoteActivity::class.java)
-            intent.putExtra(EXTRA_NOTE, note)
+            intent.putExtra(EXTRA_NOTE, noteId)
             return intent
         }
     }
 
     private var note: Note? = null
     private lateinit var ui: ActivityNoteBinding
-    private lateinit var viewModel: NoteViewModel
-    private val textChangeListener = object: TextWatcher {
+    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val layoutRes: Int = R.layout.activity_note
+    private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             triggerSaveNote()
         }
@@ -51,9 +53,14 @@ class NoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ui = ActivityNoteBinding.inflate(layoutInflater)
-        setContentView(ui.root)
 
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        val noteId = intent.getStringExtra(EXTRA_NOTE)
+
+        noteId?.let {
+            viewModel.loadNote(it)
+        }
+
+        if (noteId == null ) supportActionBar?.title = getString(R.string.new_note_title)
 
         note = intent.getParcelableExtra(EXTRA_NOTE)
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -89,7 +96,7 @@ class NoteActivity : AppCompatActivity() {
         ui.bodyEt.addTextChangedListener(textChangeListener)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         android.R.id.home -> {
             onBackPressed()
             true
@@ -102,9 +109,11 @@ class NoteActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
-                note = note?.copy(title = ui.titleEt.text.toString(),
+                note = note?.copy(
+                    title = ui.titleEt.text.toString(),
                     note = ui.bodyEt.text.toString(),
-                    lastChanged = Date())
+                    lastChanged = Date()
+                )
 
                 note?.let { note ->
                     viewModel.saveChanges(note)
@@ -112,5 +121,10 @@ class NoteActivity : AppCompatActivity() {
             }
 
         }, SAVE_DELAY)
+    }
+
+    override fun renderData(data: Note?) {
+        this.note = data
+        initView()
     }
 }
