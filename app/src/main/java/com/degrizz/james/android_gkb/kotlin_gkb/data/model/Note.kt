@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Note(
-    val id: String = "",
+    val id: String = UUID.randomUUID().toString(),
     val title: String = "",
     val note: String = "",
     val color: Color = Color.WHITE,

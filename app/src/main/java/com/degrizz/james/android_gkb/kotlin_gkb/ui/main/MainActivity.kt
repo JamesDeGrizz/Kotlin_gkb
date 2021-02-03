@@ -1,19 +1,23 @@
 package com.degrizz.james.android_gkb.kotlin_gkb.ui.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
+import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
     override val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+    override val ui: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override val layoutRes: Int = R.layout.activity_main
     private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(ui.toolbar)
 
         adapter = MainAdapter( object : OnItemClickListener {
             override fun onItemClick(note: Note) {
@@ -22,7 +26,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
         })
         mainRecycler.adapter = adapter
 
-        fab.setOnClickListener( { openNoteScreen(null) })
+        ui.fab.setOnClickListener { openNoteScreen(null) }
     }
 
     override fun renderData(data: List<Note>?) {
@@ -35,4 +39,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
         startActivity(intent)
     }
 
+    companion object {
+        fun getStartIntent(context: Context) = Intent(context, MainActivity::class.java)
+    }
 }
