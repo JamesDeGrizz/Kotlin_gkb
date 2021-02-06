@@ -1,19 +1,37 @@
 package com.degrizz.james.android_gkb.kotlin_gkb.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import com.degrizz.james.android_gkb.kotlin_gkb.data.Repository
+import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
+import com.degrizz.james.android_gkb.kotlin_gkb.data.model.NoteResult
 
-class MainViewModel : ViewModel() {
+class MainViewModel(val repository: Repository = Repository) :
+    BaseViewModel<List<Note>?, MainViewState>() {
 
-    private val viewStateLiveData: MutableLiveData<MainViewState> = MutableLiveData()
+    private val notesObserver = object : Observer<NoteResult> {
+        override fun onChanged(t: NoteResult?) {
+            if (t == null) return
 
-    init {
-        Repository.getNotes().observeForever { notes ->
-            viewStateLiveData.value = viewStateLiveData.value?.copy(notes = notes) ?: MainViewState(notes)
+            when (t) {
+                is NoteResult.Success<*> -> {
+                    viewStateLiveData.value = MainViewState(notes = t.data as? List<Note>)
+                }
+                is NoteResult.Error -> {
+                    viewStateLiveData.value = MainViewState(error = t.error)
+                }
+            }
         }
     }
 
-    fun viewState(): LiveData<MainViewState> = viewStateLiveData
+    private val repositoryNotes = repository.getNotes()
+
+    init {
+        viewStateLiveData.value = MainViewState()
+        repositoryNotes.observeForever(notesObserver)
+    }
+
+    override fun onCleared() {
+        repositoryNotes.removeObserver(notesObserver)
+    }
+
 }

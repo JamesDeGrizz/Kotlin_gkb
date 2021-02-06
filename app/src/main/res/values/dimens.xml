@@ -9,4 +9,5 @@
     <dimen name="cardViewMarginEnd">4dp</dimen>
     <dimen name="cardViewMarginTop">4dp</dimen>
     <dimen name="cardViewMarginBottom">4dp</dimen>
+    <dimen name="padding_default">10dp</dimen>
 </resources>
