@@ -80,4 +80,21 @@ class FireStoreProvider : RemoteDataProvider {
             .document(firebaseUser.uid)
             .collection(NOTES_COLLECTION)
     } ?: throw NoAuthException()
+
+    override fun deleteNote(noteId: String): LiveData<NoteResult> =
+        MutableLiveData<NoteResult>().apply {
+            try {
+                getUserNotesCollection()
+                    .document(noteId)
+                    .delete()
+                    .addOnSuccessListener {
+                        value = NoteResult.Success(null)
+                    }
+                    .addOnFailureListener { exception ->
+                        value = NoteResult.Error(exception)
+                    }
+            } catch (e: Throwable) {
+                value = NoteResult.Error(e)
+            }
+        }
 }

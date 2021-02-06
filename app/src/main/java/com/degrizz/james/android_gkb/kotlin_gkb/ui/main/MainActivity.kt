@@ -11,7 +11,6 @@ import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
 import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
     override val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
@@ -29,9 +28,9 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
                 openNoteScreen(note)
             }
         })
-        mainRecycler.adapter = adapter
+        ui.mainRecycler.adapter = adapter
 
-        fab.setOnClickListener( { openNoteScreen(null) })
+        ui.fab.setOnClickListener( { openNoteScreen(null) })
     }
 
     override fun renderData(data: List<Note>?) {
