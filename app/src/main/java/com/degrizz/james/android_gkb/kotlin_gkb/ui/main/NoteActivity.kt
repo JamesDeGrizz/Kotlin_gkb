@@ -97,7 +97,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
                     title = ui.titleEt.text.toString(),
                     note = ui.bodyEt.text.toString(),
                     lastChanged = Date()
-                )
+                ) ?: createNewNote()
 
                 note?.let { note ->
                     viewModel.saveChanges(note)
@@ -106,6 +106,11 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
         }, SAVE_DELAY)
     }
+
+    private fun createNewNote(): Note = Note(
+        UUID.randomUUID().toString(),
+        ui.titleEt.text.toString()
+    )
 
     override fun renderData(data: Note?) {
         this.note = data

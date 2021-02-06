@@ -21,6 +21,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(ui.root)
         setSupportActionBar(ui.toolbar)
 
         adapter = MainAdapter( object : OnItemClickListener {
@@ -30,7 +31,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
         })
         mainRecycler.adapter = adapter
 
-        ui.fab.setOnClickListener { openNoteScreen(null) }
+        fab.setOnClickListener( { openNoteScreen(null) })
     }
 
     override fun renderData(data: List<Note>?) {

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import com.degrizz.james.android_gkb.kotlin_gkb.R
+import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
 
