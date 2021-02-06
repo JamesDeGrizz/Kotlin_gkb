@@ -8,9 +8,8 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Color
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
@@ -33,9 +32,10 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     private var note: Note? = null
-    private lateinit var ui: ActivityNoteBinding
     override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
     override val layoutRes: Int = R.layout.activity_note
+    override val ui: ActivityNoteBinding
+            by lazy { ActivityNoteBinding.inflate(layoutInflater) }
     private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             triggerSaveNote()
@@ -52,7 +52,6 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ui = ActivityNoteBinding.inflate(layoutInflater)
 
         val noteId = intent.getStringExtra(EXTRA_NOTE)
 
@@ -113,7 +112,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
                     title = ui.titleEt.text.toString(),
                     note = ui.bodyEt.text.toString(),
                     lastChanged = Date()
-                )
+                ) ?: createNewNote()
 
                 note?.let { note ->
                     viewModel.saveChanges(note)
@@ -122,6 +121,11 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
         }, SAVE_DELAY)
     }
+
+    private fun createNewNote(): Note = Note(
+        UUID.randomUUID().toString(),
+        ui.titleEt.text.toString()
+    )
 
     override fun renderData(data: Note?) {
         this.note = data
