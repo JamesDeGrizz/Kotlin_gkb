@@ -7,7 +7,6 @@ import com.degrizz.james.android_gkb.kotlin_gkb.data.model.NoteResult
 
 class NoteViewModel(val repository: Repository = Repository) : BaseViewModel<NoteViewState.Data, NoteViewState>() {
 
-    private var pendingNote: Note? = null
     private val currentNote: Note?
         get() = viewStateLiveData.value?.data?.note
 
@@ -16,7 +15,7 @@ class NoteViewModel(val repository: Repository = Repository) : BaseViewModel<Not
     }
 
     override fun onCleared() {
-        pendingNote?.let { note -> repository.saveNote(note) }
+        currentNote?.let { note -> repository.saveNote(note) }
     }
 
     fun loadNote(noteId: String) {
