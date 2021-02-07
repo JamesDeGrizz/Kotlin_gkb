@@ -5,7 +5,7 @@ import com.degrizz.james.android_gkb.kotlin_gkb.data.Repository
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.NoteResult
 
-class NoteViewModel(val repository: Repository = Repository) : BaseViewModel<NoteViewState.Data, NoteViewState>() {
+class NoteViewModel(val repository: Repository) : BaseViewModel<NoteViewState.Data, NoteViewState>() {
 
     private val currentNote: Note?
         get() = viewStateLiveData.value?.data?.note

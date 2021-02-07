@@ -10,12 +10,12 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Color
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
 import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityNoteBinding
 import java.util.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val SAVE_DELAY = 2000L
 
@@ -34,7 +34,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
     private var note: Note? = null
     private var color: Color = Color.RED
     override val ui: ActivityNoteBinding by lazy { ActivityNoteBinding.inflate(layoutInflater) }
-    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val viewModel: NoteViewModel by viewModel()
     override val layoutRes: Int = R.layout.activity_note
     private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
