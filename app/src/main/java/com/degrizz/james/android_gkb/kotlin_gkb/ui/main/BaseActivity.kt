@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
+import com.degrizz.james.android_gkb.kotlin_gkb.R
+import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
 
@@ -15,25 +19,24 @@ abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(ui.root)
 
-        viewModel.getViewState().observe(this, object : Observer<VS> {
-            override fun onChanged(t: VS?) {
-                if (t == null) return
-                if (t.data != null) renderData(t.data!!)
-                if (t.error != null) renderError(t.error)
+        viewModel.getViewState().observe(this) { t ->
+            t?.apply {
+                data?.let { renderData(it) }
+                error?.let { renderError(it) }
             }
-        })
+        }
     }
 
-    protected fun renderError(error: Throwable) {
-        if (error.message != null) showError(error.message!!)
+    protected open fun renderError(error: Throwable) {
+        error.message?.let { showError(it) }
     }
 
     abstract fun renderData(data: T)
 
     protected fun showError(error: String) {
-//        val snackbar = Snackbar.make(this.viewModel, error, Snackbar.LENGTH_INDEFINITE)
-//        snackbar.setAction(R.string.ok_btn_title, View.OnClickListener { snackbar.dismiss() })
-//        snackbar.show()
+        Snackbar.make(ui.root, error, Snackbar.LENGTH_INDEFINITE).apply {
+            setAction(R.string.ok_btn_title) { dismiss() }
+            show()
+        }
     }
-
 }
