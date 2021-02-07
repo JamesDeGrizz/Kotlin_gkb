@@ -9,15 +9,17 @@ import com.google.firebase.firestore.*
 private const val NOTES_COLLECTION = "notes"
 private const val USERS_COLLECTION = "users"
 
-class FireStoreProvider : RemoteDataProvider {
+class FireStoreProvider(
+    private val firebaseAuth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : RemoteDataProvider {
 
     companion object {
         private val TAG = "${FireStoreProvider::class.java.simpleName} :"
     }
 
-    private val db = FirebaseFirestore.getInstance()
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = firebaseAuth.currentUser
 
     override fun getCurrentUser(): LiveData<User?> =
         MutableLiveData<User?>().apply {
@@ -80,4 +82,21 @@ class FireStoreProvider : RemoteDataProvider {
             .document(firebaseUser.uid)
             .collection(NOTES_COLLECTION)
     } ?: throw NoAuthException()
+
+    override fun deleteNote(noteId: String): LiveData<NoteResult> =
+        MutableLiveData<NoteResult>().apply {
+            try {
+                getUserNotesCollection()
+                    .document(noteId)
+                    .delete()
+                    .addOnSuccessListener {
+                        value = NoteResult.Success(null)
+                    }
+                    .addOnFailureListener { exception ->
+                        value = NoteResult.Error(exception)
+                    }
+            } catch (e: Throwable) {
+                value = NoteResult.Error(e)
+            }
+        }
 }

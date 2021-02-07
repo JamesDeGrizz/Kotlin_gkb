@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Color
@@ -41,20 +42,8 @@ class MainAdapter(private val onItemClickListener: OnItemClickListener) : Recycl
             ui.title.text = note.title
             ui.body.text = note.note
 
-            val color = when (note.color) {
-                Color.WHITE -> R.color.color_white
-                Color.VIOLET -> R.color.color_violet
-                Color.YELLOW -> R.color.color_yellow
-                Color.RED -> R.color.color_red
-                Color.PINK -> R.color.color_pink
-                Color.GREEN -> R.color.color_green
-                Color.BLUE -> R.color.color_blue
-            }
-
-            itemView.setBackgroundResource(color)
-            itemView.setOnClickListener {
-                onItemClickListener.onItemClick(note)
-            }
+            ui.container.setCardBackgroundColor(note.color.getColorInt(itemView.context))
+            itemView.setOnClickListener { onItemClickListener.onItemClick(note) }
         }
     }
 }
