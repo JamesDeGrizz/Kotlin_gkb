@@ -1,5 +1,6 @@
 package com.degrizz.james.android_gkb.kotlin_gkb.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
 import com.degrizz.james.android_gkb.kotlin_gkb.data.Repository
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
@@ -30,7 +31,8 @@ class MainViewModel(val repository: Repository) :
         repositoryNotes.observeForever(notesObserver)
     }
 
-    override fun onCleared() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public override fun onCleared() {
         repositoryNotes.removeObserver(notesObserver)
     }
 
