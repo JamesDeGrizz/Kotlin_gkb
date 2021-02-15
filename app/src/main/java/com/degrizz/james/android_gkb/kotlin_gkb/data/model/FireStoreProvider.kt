@@ -23,11 +23,11 @@ class FireStoreProvider(
     private val currentUser
         get() = firebaseAuth.currentUser
 
-    override suspend fun getCurrentUser(): User =
+    override suspend fun getCurrentUser(): User? =
         suspendCoroutine { continuation ->
             currentUser?.let {
                 continuation.resume(User(it.displayName ?: "", it.email ?: ""))
-            } ?: continuation.resumeWithException(NoAuthException())
+            } ?: continuation.resume(null)
         }
 
     override suspend fun subscribeToAllNotes(): ReceiveChannel<NoteResult> =
