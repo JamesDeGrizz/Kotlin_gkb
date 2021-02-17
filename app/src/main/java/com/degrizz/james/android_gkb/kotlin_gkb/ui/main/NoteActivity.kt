@@ -14,12 +14,14 @@ import com.degrizz.james.android_gkb.kotlin_gkb.R
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Color
 import com.degrizz.james.android_gkb.kotlin_gkb.data.model.Note
 import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityNoteBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val SAVE_DELAY = 2000L
 
-class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
+class NoteActivity : BaseActivity<NoteViewState.Data>() {
 
     companion object {
         const val EXTRA_NOTE = "NoteActivity.extra.note"
@@ -118,21 +120,20 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
     private fun triggerSaveNote() {
         if (ui.titleEt.text == null || ui.titleEt.text!!.length < 3) return
 
-        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-            override fun run() {
-                note = note?.copy(
-                    title = ui.titleEt.text.toString(),
-                    note = ui.bodyEt.text.toString(),
-                    color = color,
-                    lastChanged = Date()
-                ) ?: createNewNote()
+        launch {
+            delay(SAVE_DELAY)
 
-                note?.let { note ->
-                    viewModel.saveChanges(note)
-                }
+            note = note?.copy(
+                title = ui.titleEt.text.toString(),
+                note = ui.bodyEt.text.toString(),
+                color = color,
+                lastChanged = Date()
+            ) ?: createNewNote()
+
+            note?.let { note ->
+                viewModel.saveChanges(note)
             }
-
-        }, SAVE_DELAY)
+        }
     }
 
     private fun createNewNote(): Note = Note(

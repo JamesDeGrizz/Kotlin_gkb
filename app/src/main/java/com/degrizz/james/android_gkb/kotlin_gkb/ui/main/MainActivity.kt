@@ -12,7 +12,7 @@ import com.degrizz.james.android_gkb.kotlin_gkb.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
+class MainActivity : BaseActivity<List<Note>?>(), LogoutDialog.LogoutListener {
     override val viewModel: MainViewModel by viewModel()
     override val ui: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override val layoutRes: Int = R.layout.activity_main
